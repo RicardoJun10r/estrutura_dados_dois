@@ -1,5 +1,6 @@
 # Árvores AVL
-    - Foram criadas por Adelson-Velsky e Lands, juntando as iniciais = (AVL).
+
+- Foram criadas por Adelson-Velsky e Lands, juntando as iniciais = (AVL).
  
 * Ávores AVL são ávores binárias de buscas que se alto balanceiam, a partir do fator de balanceamento de cada nó.
     - Esse fator de balanceamento é a subtração da altura da sub-árvore esquerda com a altura da sub-árvore direita de determinado nó.
