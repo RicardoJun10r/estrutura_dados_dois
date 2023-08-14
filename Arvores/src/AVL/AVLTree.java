@@ -24,7 +24,7 @@ public class AVLTree<T extends Comparable<T>> {
     public void remove(T valor){
         if(isEmpty()) System.out.println("Vazio");
         else {
-            remove(raiz, valor);
+            this.raiz = remove(raiz, valor);
             this.raiz = this.FB(raiz);
         }
     }
