@@ -139,22 +139,26 @@ public class AVLTree<T extends Comparable<T>> {
 
             // Rotação Simples a esquerda
             if(folha.getFB() < -1 && folha.getDir().getFB() <= 0){
+                System.out.println("Rotação Simples a esquerda");
                 return rotacaoEsquerdaSimples(folha);
             }
 
             // Rotação Simples a direita
             if(folha.getFB() > 1 && folha.getEsq().getFB() >= 0){
+                System.out.println("Rotação Simples a direita");
                 return rotacaoDireitaSimples(folha);
             }
 
             // Rotação Dupla a esquerda
             if(folha.getFB() < -1 && folha.getDir().getFB() > 0){
+                System.out.println("Rotação Dupla a esquerda");
                 folha.setDir(rotacaoDireitaSimples(folha.getDir()));
                 return rotacaoEsquerdaSimples(folha);
             }
 
             // Rotação Dupla a direita
             if(folha.getFB() > 1 && folha.getEsq().getFB() < 0){
+                System.out.println("Rotação Dupla a direita");
                 folha.setEsq(rotacaoEsquerdaSimples(folha.getEsq()));
                 return rotacaoDireitaSimples(folha);
             }

@@ -1,32 +1,20 @@
-import AVL.AVLTree;
+import RBTree.ArvoreRB;
 
 public class Demo {
 
     public static void main(String[] args) {
 
-        AVLTree<Integer> avlTree = new AVLTree<>();
+        ArvoreRB<Integer> arvoreRB = new ArvoreRB<>();
 
-        avlTree.insert(14);
-        avlTree.insert(10);
-        avlTree.insert(15);
-        avlTree.insert(35);
-        avlTree.insert(-20);
-        avlTree.insert(12);
+        arvoreRB.insert(10000);
+        arvoreRB.insert(1);
+        arvoreRB.insert(1000);
+        arvoreRB.insert(100000);
+        arvoreRB.insert(100);
+        arvoreRB.insert(10);
+
+        arvoreRB.emOrdem();
         
-        System.out.println("EM ORDEM");
-        avlTree.preOrdem();
-        
-        avlTree.insert(50);
-
-        System.out.println("EM ORDEM ( Rotação )");
-        avlTree.preOrdem();
-
-        avlTree.remove(14);
-
-        System.out.println();
-        avlTree.preOrdem();
-
-
     }
     
 }

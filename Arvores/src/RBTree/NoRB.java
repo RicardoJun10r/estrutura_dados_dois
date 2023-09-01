@@ -4,17 +4,32 @@ public class NoRB<T> {
     
     private T valor;
 
+    /*
+     * BLACK - FALSE
+     * RED - TRUE
+     */
     private boolean cor;
 
     private NoRB<T> esq;
 
     private NoRB<T> dir;
 
+    private NoRB<T> pai;
+
     public NoRB(T valor) {
         this.valor = valor;
-        this.cor = false;
+        this.cor = true;
         this.esq = null;
         this.dir = null;
+        this.pai = null;
+    }
+    
+    public NoRB<T> getPai() {
+        return pai;
+    }
+
+    public void setPai(NoRB<T> pai) {
+        this.pai = pai;
     }
 
     public T getValor() {
@@ -25,7 +40,7 @@ public class NoRB<T> {
         this.valor = valor;
     }
 
-    public boolean isCor() {
+    public boolean getCor() {
         return cor;
     }
 
