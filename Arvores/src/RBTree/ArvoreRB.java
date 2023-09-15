@@ -24,70 +24,193 @@ public class ArvoreRB<T extends Comparable<T>> {
             this.raiz.setCor(false);
         }
         insert(raiz, valor);
-        this.raiz = evaluate(raiz);
+        // this.raiz = evaluate(raiz);
     }
 
-    private void insert(NoRB<T> filho, T valor){
+    private void insert(NoRB<T> pai, T valor){
+
+        if(pai.getValor().compareTo(valor) == 0) return;
         
-        if(valor.compareTo(filho.getValor()) > 0){
-            if(dirNull(filho)){
-                NoRB<T> novo = new NoRB<>(valor);
-                filho.setDir(novo);
-                novo.setPai(filho);
+        if(valor.compareTo(pai.getValor()) > 0){
+            if(dirNull(pai)){
+                NoRB<T> filho = new NoRB<>(valor);
+                pai.setDir(filho);
+                filho.setPai(pai);
+                if(filho.getPai().getPai() == null) return;
+                this.balancearInsercao(filho);
             }
-            insert(filho.getDir(), valor);
+            insert(pai.getDir(), valor);
         }
-        else if(valor.compareTo(filho.getValor()) < 0){
-            if(esqNull(filho)){
-                NoRB<T> novo = new NoRB<>(valor);
-                filho.setEsq(novo);
-                novo.setPai(filho);
+        else if(valor.compareTo(pai.getValor()) < 0){
+            if(esqNull(pai)){
+                NoRB<T> filho = new NoRB<>(valor);
+                pai.setEsq(filho);
+                filho.setPai(pai);
+                if(filho.getPai().getPai() == null) return;
+                this.balancearInsercao(filho);
             }
-            insert(filho.getEsq(), valor);
+            insert(pai.getEsq(), valor);
         }
 
     }
 
-    private NoRB<T> evaluate(NoRB<T> filho){
-        if(filho != null){
-            filho.setEsq( this.evaluate(filho.getEsq()) );
-            filho.setDir( this.evaluate(filho.getDir()) );
-            if(filho.getPai() != null)
-                if(filho.getCor() == true && filho.getPai().getCor() == true)
-                    return balancear(filho);
+    private void balancearInsercao(NoRB<T> novo){
+
+        NoRB<T> v = novo;
+
+        NoRB<T> tio = null;
+
+        while(v.getPai().getCor() == true){
+
+            // PAI A DIREITA DO AVÔ
+            if(v.getPai() == v.getPai().getPai().getDir()){
+
+                tio = v.getPai().getPai().getEsq();
+
+                // TIO É PRETO
+                if(tio == null || tio.getCor() == false){
+
+                    // VALOR A ESQUERDA DO PAI
+                    if(v == v.getPai().getEsq()){
+                        v = v.getPai();
+                        rotacaoDireitaSimples(v);
+                    }
+
+                    // VALOR A DIREITA DO PAI
+                    v.getPai().setCor(!v.getPai().getCor());
+                    v.getPai().getPai().setCor(!v.getPai().getPai().getCor());
+                    rotacaoEsquerdaSimples(v.getPai().getPai());
+
+                }
+                // TIO É VERMELHO
+                else {
+
+                    v.getPai().setCor(!v.getPai().getCor());
+                    tio.setCor(!tio.getCor());
+                    v.getPai().getPai().setCor(!v.getPai().getPai().getCor());
+                    v = v.getPai().getPai();
+
+                }
+            } 
+            // PAI A ESQUERDA DO AVÔ
+            else {
+                tio = v.getPai().getPai().getDir();
+
+                // TIO É PRETO
+                if(tio == null || tio.getCor() == false){
+
+                    // VALOR A ESQUERDA DO PAI
+                    if(v == v.getPai().getDir()){
+                        v = v.getPai();
+                        rotacaoEsquerdaSimples(v);
+                    }
+
+                    // VALOR A DIREITA DO PAI
+                    v.getPai().setCor(!v.getPai().getCor());
+                    v.getPai().getPai().setCor(!v.getPai().getPai().getCor());
+                    rotacaoDireitaSimples(v.getPai().getPai());
+
+                } 
+
+                // TIO É VERMELHO
+                else {
+
+                    v.getPai().setCor(!v.getPai().getCor());
+                    tio.setCor(!tio.getCor());
+                    v.getPai().getPai().setCor(!v.getPai().getPai().getCor());
+                    v = v.getPai().getPai();
+
+                }
+            }
+
+            if(v == this.raiz) break;
+
         }
-        return filho;
+        this.raiz.setCor(false);
     }
 
-    private NoRB<T> balancear(NoRB<T> pai){
-        NoRB<T> avo = pai.getPai();
-        if(pai.getValor().compareTo(avo.getValor()) > 0){
-            NoRB<T> tio = avo.getEsq();
-            if(tio.getCor()){
-                pai.setCor(!pai.getCor());
-                tio.setCor(!tio.getCor());
-                avo.setCor(!avo.getCor());
-                return pai;
+    public void remover(T valor){
+        if(isEmpty()) return;
+        else remover(raiz, valor);
+    }
+
+    private void remover(NoRB<T> folha, T valor){
+        NoRB<T> remover = null, pai = null;
+        while(folha != null){
+            if(folha.getValor().compareTo(valor) == 0){
+                remover = folha;
             }
-            return rotacaoEsquerdaSimples(avo);
+            if(valor.compareTo(folha.getValor()) > 0) folha = folha.getDir();
+            else folha = folha.getEsq();
+        }
+
+        if(remover == null) return;
+
+        boolean cor = remover.getCor();
+        if(dirNull(remover) && esqNull(remover)){
+            pai = remover.getPai();
+            remover = null;
+        }
+        else if(soFolhaEsq(remover)){
+            pai = remover.getEsq();
+            
+        } else if(soFolhaDir(remover)){
+
         } else {
-            NoRB<T> tio = avo.getDir();
-            if(tio.getCor()){
-                pai.setCor(!pai.getCor());
-                tio.setCor(!tio.getCor());
-                avo.setCor(!avo.getCor());
-                return pai;
-            }
-            return rotacaoDireitaSimples(avo);
         }
+
+        if(cor = false){
+
+        }
+
     }
 
-    private NoRB<T> rotacaoEsquerdaSimples(NoRB<T> avo){
+    private void rotacaoEsquerdaSimples(NoRB<T> folha){
         
+        NoRB<T> filho = folha.getDir();
+        folha.setDir(filho.getEsq());
+
+        if(filho.getEsq() != null){
+            filho.getEsq().setPai(folha);
+        }
+
+        filho.setPai(folha.getPai());
+
+        if(filho.getPai() == null) raiz = filho;
+
+        else if(folha == folha.getPai().getDir()){
+            folha.getPai().setDir(filho);
+        } else {
+            folha.getPai().setEsq(filho);
+        }
+
+        filho.setEsq(folha);
+        folha.setPai(filho);
+
     }
 
-    private NoRB<T> rotacaoDireitaSimples(NoRB<T> avo){
-        NoRB<T> aux = avo.getEsq().getDir();
+    private void rotacaoDireitaSimples(NoRB<T> folha){
+
+        NoRB<T> filho = folha.getEsq();
+        folha.setEsq(filho.getDir());
+
+        if(filho.getDir() != null){
+            filho.getDir().setPai(folha);
+        }
+
+        filho.setPai(folha.getPai());
+
+        if(filho.getPai() == null) raiz = filho;
+
+        else if(folha == folha.getPai().getDir()){
+            folha.getPai().setDir(filho);
+        } else {
+            folha.getPai().setEsq(filho);
+        }
+
+        filho.setDir(folha);
+        folha.setPai(filho);
+
     }
 
     private Boolean esqNull(NoRB<T> folha){
@@ -97,6 +220,16 @@ public class ArvoreRB<T extends Comparable<T>> {
 
     private Boolean dirNull(NoRB<T> folha){
         if(folha.getDir() == null) return true;
+        else return false;
+    }
+
+    private Boolean soFolhaEsq(NoRB<T> folha){
+        if(folha.getEsq() != null && folha.getDir() == null) return true;
+        else return false;
+    }
+
+    private Boolean soFolhaDir(NoRB<T> folha){
+        if(folha.getEsq() == null && folha.getDir() != null) return true;
         else return false;
     }
 
