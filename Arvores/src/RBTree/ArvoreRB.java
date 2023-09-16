@@ -135,7 +135,7 @@ public class ArvoreRB<T extends Comparable<T>> {
     }
 
     private void remover(NoRB<T> folha, T valor){
-        NoRB<T> remover = null, pai = null;
+        NoRB<T> remover = null, x = null;
         while(folha != null){
             if(folha.getValor().compareTo(valor) == 0){
                 remover = folha;
@@ -148,22 +148,78 @@ public class ArvoreRB<T extends Comparable<T>> {
 
         boolean cor = remover.getCor();
         if(dirNull(remover) && esqNull(remover)){
-            pai = remover.getPai();
+            if(raiz == remover) raiz = null;
+            x = remover.getPai();
             remover = null;
         }
         else if(soFolhaEsq(remover)){
-            pai = remover.getEsq();
+            x = remover.getEsq();
+            if(remover.getPai() == null){
+                raiz = remover.getEsq();
+            }
+
+            x.setPai(remover.getPai().getPai());
+            if(remover == remover.getPai().getEsq()){
+                remover.getPai().setEsq(x);
+            } else {
+                remover.getPai().setDir(x);
+            }
+
+            remover = null;
+
+            if(x.getCor()){
+                cor = x.getCor();
+            }
             
         } else if(soFolhaDir(remover)){
 
+            x = remover.getDir();
+            if(remover.getPai() == null){
+                raiz = remover.getDir();
+            }
+
+            x.setPai(remover.getPai().getPai());
+            if(remover == remover.getPai().getDir()){
+                remover.getPai().setDir(x);
+            } else {
+                remover.getPai().setEsq(x);
+            }
+
+            remover = null;
+
+            if(x.getCor()){
+                cor = x.getCor();
+            }
+
         } else {
+            NoRB<T> noMinimo = minimo(remover);
+
+            cor = noMinimo.getCor();
+
+            if(raiz == remover){
+                raiz = noMinimo;
+            }
+
+            
+
         }
 
-        if(cor = false){
-
+        if(cor == false){
+            balancearDelete(x);
         }
 
     }
+
+    private NoRB<T> minimo(NoRB<T> remover){
+        NoRB<T> index = remover.getEsq();
+        while(index != null){
+            if(index.getDir() != null) index = index.getDir();
+            else break;
+        }
+        return index;
+    }
+
+    private void balancearDelete(NoRB<T> x){}
 
     private void rotacaoEsquerdaSimples(NoRB<T> folha){
         
