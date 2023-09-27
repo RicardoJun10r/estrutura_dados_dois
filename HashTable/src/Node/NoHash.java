@@ -6,9 +6,9 @@ public class NoHash<T> {
     
     private T valor;
     
-    private int chave;
+    private Integer chave;
 
-    public NoHash(T valor, int chave) {
+    public NoHash(T valor, Integer chave) {
         this.prox = null;
         this.valor = valor;
         this.chave = chave;
@@ -30,11 +30,11 @@ public class NoHash<T> {
         this.valor = valor;
     }
 
-    public int getChave() {
+    public Integer getChave() {
         return chave;
     }
 
-    public void setChave(int chave) {
+    public void setChave(Integer chave) {
         this.chave = chave;
     }
     
