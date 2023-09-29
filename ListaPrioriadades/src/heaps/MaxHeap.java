@@ -11,15 +11,23 @@ public class MaxHeap<T extends Comparable<T>> {
     }
 
     public void Add(T valor){
-        int tamanho = this.lista.Size();
 
-        if(tamanho == 0){
+        if(this.lista.Empty()){
             lista.Add(valor);
         } else {
             lista.Add(valor);
-            Subir(tamanho);
+            Subir(this.lista.Size()-1);
         }
 
+    }
+
+    public void Delete(){
+        if(this.lista.Empty()) return;
+        else {
+            this.lista.Set(0, this.lista.Get(this.lista.Size()-1));
+            this.lista.DeleteTail();
+            Descer(0, this.lista.Size());
+        }
     }
 
     private int Piso(int numero){
@@ -28,8 +36,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
     private void Subir(int posicao){
         
-        int tamanho = this.lista.Size();
-        int j = Piso((posicao - 1) / tamanho);
+        int j = Piso((posicao - 1) / 2);
 
         if(j >= 0 && (lista.Get(j).compareTo(lista.Get(posicao)) < 0)){
             T aux = lista.Get(j);
@@ -42,7 +49,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
     private void Descer(int posicao, int tamanho){
         
-        int j = posicao * 2 + 1;
+        int j = (posicao * 2) + 1;
 
         if(j < tamanho){
             if(j < tamanho - 1){
@@ -60,6 +67,12 @@ public class MaxHeap<T extends Comparable<T>> {
             }
         }
 
+    }
+
+    public void Print(){
+        System.out.println("=================");
+        this.lista.Print();
+        System.out.println("=================");
     }
 
 }

@@ -42,13 +42,13 @@ public class Lista<T> {
             this.cauda = novo;
         } else {
             this.cauda.prox = novo;
-            novo.prox.ant = this.cauda;
+            novo.ant = this.cauda;
             this.cauda = novo;
         }
         this.size++;
     }
 
-    public void Delete(){
+    public void DeleteHead(){
         if(Empty()) return;
         if(this.cabeca == this.cauda){
             this.cabeca = null;
@@ -64,6 +64,22 @@ public class Lista<T> {
         }
     }
 
+    public void DeleteTail(){
+        if(Empty()) return;
+        if(this.cabeca == this.cauda){
+            this.cabeca = null;
+            this.cauda = null;
+            this.size = 0;
+        } else {
+            No<T> remover = this.cauda;
+            this.cauda = this.cauda.ant;
+            this.cauda.prox = null;
+            remover.ant = null;
+            remover = null;
+            this.size--;
+        }
+    }
+
     private No<T>[] ListToVector(){
         No<T>[] vetor_lista = new No[this.size];
         No<T> index = this.cabeca;
@@ -72,6 +88,13 @@ public class Lista<T> {
             index = index.prox;
         }
         return vetor_lista;
+    }
+
+    public void Print(){
+        No<T>[] vetor_lista = ListToVector();
+        for(int i = 0; i < vetor_lista.length; i++){
+            System.out.println((i+1) + "° = " + vetor_lista[i].GetValor());
+        }
     }
 
     public T Get(int posicao){
