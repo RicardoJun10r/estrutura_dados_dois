@@ -1,34 +1,24 @@
-import heaps.MaxHeap;
+import heaps.Heap;
+import util.Lista;
 
 public class Demo {
     public static void main(String[] args) {
         
-        MaxHeap<Integer> heap = new MaxHeap<>();
+        Heap<String> heap = new Heap<>();
 
-        heap.Add(10);
-        heap.Add(20);
-        heap.Add(30);
-        heap.Add(40);
-        heap.Add(50);
-        heap.Add(60);
-        heap.Add(70);
-        heap.Add(80);
-        heap.Add(90);
-        heap.Add(100);
+        Lista<String> lista = new Lista<>();
+        
+        lista.Add("O");
+        lista.Add("R");
+        lista.Add("D");
+        lista.Add("E");
+        lista.Add("N");
+        lista.Add("A");
+        
+        heap.HeapSort(lista);
 
         heap.Print();
 
-        // heap.Delete();
-
-        // heap.Print();
-
-        // heap.Delete();
-        // heap.Delete();
-        // heap.Delete();
-        // heap.Delete();
-
-
-        // heap.Print();
 
     }
 }

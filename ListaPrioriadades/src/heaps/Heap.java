@@ -2,11 +2,11 @@ package heaps;
 
 import util.Lista;
 
-public class MaxHeap<T extends Comparable<T>> {
+public class Heap<T extends Comparable<T>> {
     
     private Lista<T> lista;
 
-    public MaxHeap(){
+    public Heap(){
         this.lista = new Lista<>();
     }
 
@@ -17,6 +17,33 @@ public class MaxHeap<T extends Comparable<T>> {
         } else {
             lista.Add(valor);
             Subir(this.lista.Size()-1);
+        }
+
+    }
+
+    public void BuildHeap(Lista<T> lista){
+
+        this.lista = lista;
+
+        int tamanho = Piso(lista.Size()/2) - 1;
+
+        for(int i = tamanho; i >= 0; i--){
+            Descer(i, this.lista.Size());
+        }
+
+    }
+
+    public void HeapSort(Lista<T> lista){
+
+        int tamanhoAtual = lista.Size();
+        BuildHeap(lista);
+
+        for(int i = lista.Size()-1; i >= 0; i--){
+            T temp = this.lista.Get(i);
+            this.lista.Set(i, this.lista.Get(0));
+            this.lista.Set(0, temp);
+            tamanhoAtual--;
+            Descer(0, tamanhoAtual);
         }
 
     }
@@ -57,14 +84,14 @@ public class MaxHeap<T extends Comparable<T>> {
                     j++;
                 }
 
-                if(lista.Get(posicao).compareTo(lista.Get(j)) < 0){
-                    T aux = lista.Get(j);
-                    lista.Set(j, lista.Get(posicao));
-                    lista.Set(posicao, aux);
-                    Descer(j, tamanho);
-                }
-
             }
+            if(lista.Get(posicao).compareTo(lista.Get(j)) < 0){
+                T aux = lista.Get(j);
+                lista.Set(j, lista.Get(posicao));
+                lista.Set(posicao, aux);
+                Descer(j, tamanho);
+            }
+
         }
 
     }
