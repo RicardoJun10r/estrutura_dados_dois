@@ -4,18 +4,27 @@ import Compressao.FrequenciaCaracteres.FreqCarac;
 
 public class Demo {
     public static void main(String[] args) {
-        String texto = "BBBEAAAAFFHHHHCBMMALLLCDDBBBBBBBCC";
+        String texto = "BBBACC";
         FreqCarac freqCarac = new FreqCarac();
 
-        String compressed = freqCarac.Compress(texto);
+        // String compressed = freqCarac.Compress(texto);
 
-        System.out.println( compressed );
+        // System.out.println( compressed );
 
-        if(compressed.equals("3B1E4A2F4H1C1B2M1A3L1C2D7B2C")){
-            System.out.println("TRUE");
-        } else System.out.println("FALSE");
+        String compressedV_2 = freqCarac.CompressV_2(texto);
 
+        System.out.println( compressedV_2 );
 
+        String decompressedV_2 = freqCarac.DecompressV_2(compressedV_2);
+
+        System.out.println( decompressedV_2 );
+
+        if(decompressedV_2.equals(texto)) System.out.println("TRUE");
+        else {
+            System.out.println("FALSE");
+            System.out.println(texto);
+            System.out.println(decompressedV_2);
+        }
 
     }
 }
