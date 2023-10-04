@@ -46,7 +46,7 @@ public class HuffTree {
 
     }
 
-    private void shellSort(){
+    public void shellSort(){
 
         int H = 1;
 
@@ -54,14 +54,15 @@ public class HuffTree {
 
         while(H > 0){
 
-            for(int i = H; i < this.vetor.length; i = i + H){
+            for(int i = H; i < this.vetor.length; i++){
                 HuffNode aux = this.vetor[i];
-                int j = i - H;
-                while(j>=0 && aux.getFrequencia() < this.vetor[j].getFrequencia()){
-                    this.vetor[j+H] = this.vetor[j];
-                    j--;
+                int j = i;
+                System.out.println("J = " + j + " I = " + i);
+                while(j > H - 1 && this.vetor[j - H].getFrequencia() > aux.getFrequencia()){
+                    this.vetor[j] = this.vetor[j - H];
+                    j = j - H;
                 }
-                this.vetor[j+H] = aux;
+                this.vetor[j] = aux;
             }
 
             H = (int) Math.floor(H / 3);
