@@ -1,6 +1,5 @@
 package Compressao;
 
-import Compressao.Huffman.HuffNode;
 import Compressao.Huffman.HuffTree;
 
 public class Demo {

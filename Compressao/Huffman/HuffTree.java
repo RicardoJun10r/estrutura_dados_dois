@@ -46,7 +46,7 @@ public class HuffTree {
 
     }
 
-    public void shellSort(){
+    private void shellSort(){
 
         int H = 1;
 
