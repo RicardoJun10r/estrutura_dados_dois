@@ -7,13 +7,9 @@ public class Demo {
 
         String texto = "ABACCDA";
 
-        HuffTree huffTree = new HuffTree();
+        HuffTree huffTree = new HuffTree(texto);
 
-        huffTree.Freq(texto);
-
-        huffTree.PrintVector();
-
-        String compressed = huffTree.Compress(texto);
+        String compressed = huffTree.Compress();
 
         System.out.println(compressed);
 

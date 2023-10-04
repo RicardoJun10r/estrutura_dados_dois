@@ -14,12 +14,15 @@ public class HuffTree {
 
     private HuffNode raiz;
 
-    public HuffTree(){
+    private String texto;
+
+    public HuffTree(String texto){
         this.map = new HashMap<>();
+        this.texto = texto;
         this.raiz = null;
     }
 
-    public void Freq(String texto){
+    private void Freq(){
 
         int freq = 1;
         for(int i = 0; i < texto.length(); i++){
@@ -31,7 +34,7 @@ public class HuffTree {
         }
 
         this.vetor = new HuffNode[this.map.size()];
-        BuildVector();
+
     }
 
     private void BuildVector(){
@@ -44,13 +47,12 @@ public class HuffTree {
             cont++;
         }
 
-        shellSort();
+    }
+
+    public String Compress(){
 
         BuildTree();
 
-    }
-
-    public String Compress(String texto){
         StringBuffer stringBuffer = new StringBuffer();
         for (int i = 0; i < texto.length(); i++) {
             Search(String.valueOf(texto.charAt(i)), stringBuffer);
@@ -58,10 +60,10 @@ public class HuffTree {
         return stringBuffer.toString();
     }
 
-    public String Decompress(String texto){
+    public String Decompress(String code){
         StringBuffer stringBuffer = new StringBuffer();
         Integer contador = 0;
-        Decompress(this.raiz, texto, contador, stringBuffer);
+        Decompress(this.raiz, code, contador, stringBuffer);
         return stringBuffer.toString();
     }
 
@@ -125,6 +127,12 @@ public class HuffTree {
     }
 
     private void BuildTree(){
+
+        Freq();
+
+        BuildVector();
+
+        shellSort();
         
         for (int i = 0; i < vetor.length; i++) {
             Add(this.vetor[i]);
