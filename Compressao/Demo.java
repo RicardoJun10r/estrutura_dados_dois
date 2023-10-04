@@ -1,30 +1,17 @@
 package Compressao;
 
-import Compressao.FrequenciaCaracteres.FreqCarac;
+import Compressao.Huffman.HuffTree;
 
 public class Demo {
     public static void main(String[] args) {
-        String texto = "BBBACC";
-        FreqCarac freqCarac = new FreqCarac();
 
-        // String compressed = freqCarac.Compress(texto);
+        String texto = "BBBEAAAAFFHHHHCBMMALLLCDDBBBBBBBCC";
 
-        // System.out.println( compressed );
+        HuffTree huffTree = new HuffTree();
 
-        String compressedV_2 = freqCarac.CompressV_2(texto);
+        huffTree.Freq(texto);
 
-        System.out.println( compressedV_2 );
-
-        String decompressedV_2 = freqCarac.DecompressV_2(compressedV_2);
-
-        System.out.println( decompressedV_2 );
-
-        if(decompressedV_2.equals(texto)) System.out.println("TRUE");
-        else {
-            System.out.println("FALSE");
-            System.out.println(texto);
-            System.out.println(decompressedV_2);
-        }
+        huffTree.PrintVector();
 
     }
 }

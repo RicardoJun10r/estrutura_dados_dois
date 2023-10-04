@@ -75,6 +75,7 @@ public class FreqCarac {
             if(Character.isDigit(texto.charAt(cont))){
                 quantidade = Integer.parseInt(String.valueOf(texto.charAt(cont)));
                 letra = texto.charAt(cont+1);
+                cont++;
             }
             for(int i = 0; i < quantidade; i++){
                 stringBuffer.append(letra);
