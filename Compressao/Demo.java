@@ -11,7 +11,15 @@ public class Demo {
 
         huffTree.Freq(texto);
 
-        System.out.println(huffTree.Compress(texto));
+        huffTree.PrintVector();
+
+        String compressed = huffTree.Compress(texto);
+
+        System.out.println(compressed);
+
+        String decompress = huffTree.Decompress(compressed);
+
+        System.out.println(decompress);
 
     }
 

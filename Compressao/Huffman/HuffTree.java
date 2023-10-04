@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import Tree.Folha;
-
 import java.util.Map.Entry;
 
 public class HuffTree {
@@ -58,6 +56,34 @@ public class HuffTree {
             Search(String.valueOf(texto.charAt(i)), stringBuffer);
         }
         return stringBuffer.toString();
+    }
+
+    public String Decompress(String texto){
+        StringBuffer stringBuffer = new StringBuffer();
+        Integer contador = 0;
+        Decompress(this.raiz, texto, contador, stringBuffer);
+        return stringBuffer.toString();
+    }
+
+    private void Decompress(HuffNode no, String texto, Integer contador, StringBuffer stringBuffer){
+
+        if(no == null) return;
+        
+        if(isNode(no)){
+            stringBuffer.append(no.getCaractere());
+            Decompress(this.raiz, texto, contador, stringBuffer);
+        }
+
+        if(contador == (texto.length())) return;
+
+
+        if(String.valueOf(texto.charAt(contador)).equals("0")){
+            contador++;
+            Decompress(no.getEsq(), texto, contador, stringBuffer);
+        } else if(String.valueOf(texto.charAt(contador)).equals("1")){
+            contador++;
+            Decompress(no.getDir(), texto, contador, stringBuffer);
+        }
     }
 
     private void Search(String caractere, StringBuffer stringBuffer){
@@ -138,8 +164,8 @@ public class HuffTree {
 
     private void PrintTree(HuffNode no){
         if(no != null){
-            PrintTree(no.getEsq());
             System.out.println("Caractere = " + no.getCaractere() + " Frequencia = " + no.getFrequencia());
+            PrintTree(no.getEsq());
             PrintTree(no.getDir());
         }
     }
