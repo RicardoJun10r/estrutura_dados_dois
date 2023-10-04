@@ -16,10 +16,31 @@ public class HuffTree {
 
     private String texto;
 
-    public HuffTree(String texto){
+    public HuffTree(){
         this.map = new HashMap<>();
-        this.texto = texto;
         this.raiz = null;
+    }
+
+    public void Clear(){
+        ClearVector();
+        ClearTree(this.raiz);
+        this.map.clear();
+        this.texto = null;
+    }
+
+    private void ClearVector(){
+        for (int i = 0; i < vetor.length; i++) {
+            vetor[i] = null;
+        }
+    }
+
+
+    private void ClearTree(HuffNode no){
+        if(no != null){
+            ClearTree(no.getEsq());
+            ClearTree(no.getDir());
+            no = null;
+        }
     }
 
     private void Freq(){
@@ -49,7 +70,9 @@ public class HuffTree {
 
     }
 
-    public String Compress(){
+    public String Compress(String texto){
+
+        this.texto = texto;
 
         BuildTree();
 
