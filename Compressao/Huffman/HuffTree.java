@@ -3,6 +3,9 @@ package Compressao.Huffman;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import Tree.Folha;
+
 import java.util.Map.Entry;
 
 public class HuffTree {
@@ -11,8 +14,11 @@ public class HuffTree {
 
     private HuffNode[] vetor;
 
+    private HuffNode raiz;
+
     public HuffTree(){
         this.map = new HashMap<>();
+        this.raiz = null;
     }
 
     public void Freq(String texto){
@@ -40,10 +46,33 @@ public class HuffTree {
             cont++;
         }
 
-        PrintVector();
-
         shellSort();
 
+        BuildTree();
+
+    }
+
+    public String Compress(String texto){
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0; i < texto.length(); i++) {
+            Search(String.valueOf(texto.charAt(i)), stringBuffer);
+        }
+        return stringBuffer.toString();
+    }
+
+    private void Search(String caractere, StringBuffer stringBuffer){
+        Search(raiz, caractere, stringBuffer);
+    }
+
+    private void Search(HuffNode no, String caractere, StringBuffer stringBuffer){
+        if(isNode(no)) return;
+        if(no.getDir().getCaractere().indexOf(caractere) == -1){
+            stringBuffer.append("0");
+            Search(no.getEsq(), caractere, stringBuffer);
+        } else {
+            stringBuffer.append("1");
+            Search(no.getDir(), caractere, stringBuffer);
+        }
     }
 
     private void shellSort(){
@@ -57,7 +86,6 @@ public class HuffTree {
             for(int i = H; i < this.vetor.length; i++){
                 HuffNode aux = this.vetor[i];
                 int j = i;
-                System.out.println("J = " + j + " I = " + i);
                 while(j > H - 1 && this.vetor[j - H].getFrequencia() > aux.getFrequencia()){
                     this.vetor[j] = this.vetor[j - H];
                     j = j - H;
@@ -68,6 +96,62 @@ public class HuffTree {
             H = (int) Math.floor(H / 3);
         }
 
+    }
+
+    private void BuildTree(){
+        
+        for (int i = 0; i < vetor.length; i++) {
+            Add(this.vetor[i]);
+        }
+
+    }
+
+    private void Add(HuffNode valor){
+        if(Empty()) {
+            this.raiz = valor;
+        } else {
+            this.raiz = Add(raiz, valor);
+        }
+    }
+
+    private HuffNode Add(HuffNode no, HuffNode novo){
+
+        StringBuffer stringBuffer = new StringBuffer();
+        Integer cont = 0;
+
+        stringBuffer.append(novo.getCaractere());
+        stringBuffer.append(no.getCaractere());
+        cont += no.getFrequencia() + novo.getFrequencia();
+        
+        HuffNode novaRaiz = new HuffNode(stringBuffer.toString(), cont);
+
+        novaRaiz.setDir(no);
+        novaRaiz.setEsq(novo);
+
+        return novaRaiz;
+
+    }
+
+    public void PrintTree(){
+        PrintTree(this.raiz);
+    }
+
+    private void PrintTree(HuffNode no){
+        if(no != null){
+            PrintTree(no.getEsq());
+            System.out.println("Caractere = " + no.getCaractere() + " Frequencia = " + no.getFrequencia());
+            PrintTree(no.getDir());
+        }
+    }
+
+    private Boolean isNode(HuffNode no){
+        if(no.getEsq() == null && no.getDir() == null) return true;
+        else return false;
+    }
+
+    private Boolean Empty(){
+        if(this.raiz == null) return true;
+        else return false;
     }
 
     public void PrintVector(){
