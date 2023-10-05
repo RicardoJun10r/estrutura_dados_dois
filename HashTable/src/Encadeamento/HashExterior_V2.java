@@ -15,7 +15,7 @@ public class HashExterior_V2<V, K> {
     private DecimalFormat decimalFormat;
 
     public HashExterior_V2(){
-        this.M = 90;
+        this.M = 5;
         this.tabela = new NoHash_V2[this.M];
         this.size = 0;
         this.decimalFormat = new DecimalFormat("0.00");
@@ -76,9 +76,9 @@ public class HashExterior_V2<V, K> {
 
         System.out.println("Adicionando " + valor.toString());
 
-        // if(fator >= 0.7d){
-        //     Redimensionar();
-        // }
+        if(fator >= 0.7d){
+            Redimensionar();
+        }
 
     }
 
@@ -259,8 +259,13 @@ public class HashExterior_V2<V, K> {
 
         if(noHash == null) return;
 
-        noHash.getAnt().setProx(noHash.getProx());
-        noHash.getProx().setAnt(noHash.getAnt());
+        if(ProxNull(noHash)){
+            noHash.getAnt().setProx(null);
+        } else {
+            noHash.getProx().setAnt(noHash.getAnt());
+            noHash.getAnt().setProx(noHash.getProx());
+        }
+        
 
         noHash.setProx(null);
         noHash.setAnt(null);
