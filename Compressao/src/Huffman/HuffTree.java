@@ -1,4 +1,4 @@
-package Compressao.Huffman;
+package Compressao.src.Huffman;
 
 import java.util.HashMap;
 import java.util.Map;

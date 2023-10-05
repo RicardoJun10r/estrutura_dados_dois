@@ -1,6 +1,6 @@
-package Compressao;
+package Compressao.src;
 
-import Compressao.Huffman.HuffTree;
+import Compressao.src.Huffman.HuffTree;
 
 public class Demo {
     public static void main(String[] args) {

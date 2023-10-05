@@ -1,4 +1,4 @@
-package Compressao.FrequenciaCaracteres;
+package Compressao.src.FrequenciaCaracteres;
 
 public class FreqCarac {
     

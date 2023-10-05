@@ -1,4 +1,4 @@
-package Compressao.Huffman;
+package Compressao.src.Huffman;
 
 public class HuffNode {
     
