@@ -15,7 +15,7 @@ public class HashExterior_V2<V, K> {
     private DecimalFormat decimalFormat;
 
     public HashExterior_V2(){
-        this.M = 5;
+        this.M = 90;
         this.tabela = new NoHash_V2[this.M];
         this.size = 0;
         this.decimalFormat = new DecimalFormat("0.00");
@@ -76,9 +76,9 @@ public class HashExterior_V2<V, K> {
 
         System.out.println("Adicionando " + valor.toString());
 
-        if(fator >= 0.7d){
-            Redimensionar();
-        }
+        // if(fator >= 0.7d){
+        //     Redimensionar();
+        // }
 
     }
 
@@ -113,6 +113,7 @@ public class HashExterior_V2<V, K> {
         }
         
         if(noHash != null){
+            noHash.setFrequencia(noHash.getFrequencia()+1);
             CF(noHash, posicao);
             return noHash;
         }
@@ -157,8 +158,13 @@ public class HashExterior_V2<V, K> {
     private void MF(NoHash_V2<V, K> no, Integer posicao){
         if(this.tabela[posicao].equals(no)) return;
         else{
+            if(ProxNull(no)){
+                no.getAnt().setProx( no.getProx() );
+            } else{
+                no.getAnt().setProx( no.getProx() );
+                no.getProx().setAnt( no.getAnt() );
+            }
             no.getAnt().setProx( no.getProx() );
-            no.getProx().setAnt( no.getAnt() );
             no.setAnt( null );
             no.setProx(this.tabela[posicao]);
             this.tabela[posicao] = no;
@@ -169,9 +175,12 @@ public class HashExterior_V2<V, K> {
         if(this.tabela[posicao].equals(no)) return;
         else{
             V temp = no.getAnt().getValor();
+            K chave = no.getAnt().getChave();
             int freq = no.getAnt().getFrequencia();
             no.getAnt().setValor( no.getValor() );
             no.getAnt().setFrequencia( no.getFrequencia() );
+            no.getAnt().setChave(no.getChave());
+            no.setChave( chave );
             no.setValor(temp);
             no.setFrequencia(freq);
         }
@@ -183,8 +192,11 @@ public class HashExterior_V2<V, K> {
             if(no.getFrequencia() > no.getAnt().getFrequencia()){
                 V temp = no.getAnt().getValor();
                 Integer freq = no.getAnt().getFrequencia();
+                K chave = no.getAnt().getChave();
                 no.getAnt().setValor( no.getValor() );
                 no.getAnt().setFrequencia( no.getFrequencia() );
+                no.getAnt().setChave(no.getChave());
+                no.setChave( chave );
                 no.setValor( temp );
                 no.setFrequencia( freq );
             }
@@ -192,7 +204,12 @@ public class HashExterior_V2<V, K> {
         }
     }
 
-    public void att(V valor, K chave){
+    private Boolean ProxNull(NoHash_V2<V, K> no){
+        if(no.getProx() == null) return true;
+        else return false;
+    }
+
+    public void ATT(V valor, K chave){
         Integer posicao = hash((Integer) chave);
 
         NoHash_V2<V, K> noHash = this.tabela[posicao];
