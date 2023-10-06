@@ -1,18 +1,18 @@
-package Huffman;
+package HuffmanAdaptativo;
 
-public class HuffNode {
+public class HuffNodeAdaptativo {
     
     private String caractere;
 
     private Integer frequencia;
 
-    private HuffNode esq;
+    private HuffNodeAdaptativo esq;
 
-    private HuffNode dir;
+    private HuffNodeAdaptativo dir;
 
-    public HuffNode(String caractere, Integer frequencia){
+    public HuffNodeAdaptativo(String caractere) {
         this.caractere = caractere;
-        this.frequencia = frequencia;
+        this.frequencia = 1;
         this.dir = null;
         this.esq = null;
     }
@@ -33,20 +33,21 @@ public class HuffNode {
         this.frequencia = frequencia;
     }
 
-    public HuffNode getEsq() {
+    public HuffNodeAdaptativo getEsq() {
         return esq;
     }
 
-    public void setEsq(HuffNode esq) {
+    public void setEsq(HuffNodeAdaptativo esq) {
         this.esq = esq;
     }
 
-    public HuffNode getDir() {
+    public HuffNodeAdaptativo getDir() {
         return dir;
     }
 
-    public void setDir(HuffNode dir) {
+    public void setDir(HuffNodeAdaptativo dir) {
         this.dir = dir;
     }
+
 
 }
