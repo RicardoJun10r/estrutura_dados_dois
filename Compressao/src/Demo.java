@@ -1,23 +1,34 @@
 package Compressao.src;
 
+import java.time.LocalDate;
+
 import Compressao.src.Huffman.HuffTree;
+import ListaAutoAjustavel.ListaAjustavel;
 
 public class Demo {
     public static void main(String[] args) {
 
-        String texto = "ABACCDA";
+        ListaAjustavel<Integer> listaAjustavel = new ListaAjustavel<>();
 
-        HuffTree huffTree = new HuffTree();
+        listaAjustavel.Add(10);
+        listaAjustavel.Add(20);
+        listaAjustavel.Add(30);
+        listaAjustavel.Add(40);
+        listaAjustavel.Add(50);
+        listaAjustavel.Add(60);
+        listaAjustavel.Add(70);
 
-        String compressed = huffTree.Compress(texto);
+        listaAjustavel.Print();
 
-        System.out.println(compressed);
+        listaAjustavel.SearchCF(60);
 
-        String decompress = huffTree.Decompress(compressed);
+        listaAjustavel.Print();
 
-        System.out.println(decompress);
+        listaAjustavel.SearchCF(60);
 
-        huffTree.Clear();
+        listaAjustavel.SearchCF(70);
+
+        listaAjustavel.Print();
 
     }
 

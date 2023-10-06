@@ -168,13 +168,15 @@ public class ListaAjustavel<T> {
         else {
             if(this.head.equals(no)) return;
             else{
-                if(no.frequencia > no.ant.frequencia){
+                while(no.frequencia > no.ant.frequencia){
                     T temp = no.ant.valor;
                     int freq = no.ant.frequencia;
                     no.ant.valor = no.valor;
                     no.ant.frequencia = no.frequencia;
                     no.valor = temp;
                     no.frequencia = freq;
+                    if(no.ant != null) no = no.ant;
+                    if(this.head.equals(no)) return;
                 }
                 return;
             }
