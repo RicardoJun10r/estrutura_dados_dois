@@ -64,7 +64,7 @@ public class HashExterior_V2<V, K> {
                 noHash = new NoHash_V2<>(valor, chave);
                 no_ant.setProx(noHash);
                 noHash.setAnt(no_ant);
-            } else return;
+            }
 
         }
 
@@ -85,21 +85,20 @@ public class HashExterior_V2<V, K> {
     private void Redimensionar(){
         
         this.M = ProximoPrimo(this.M*2);
-        NoHash_V2<V, K>[] nova_tabela = new NoHash_V2[this.M];
+        
+        NoHash_V2<V, K>[] velha_tabela = this.tabela;
 
-        for (int i = 0; i < this.tabela.length; i++) {
+        this.tabela = new NoHash_V2[this.M];
 
-            if(this.tabela[i] != null){
+        for (int i = 0; i < velha_tabela.length; i++) {
 
-                Integer posicao = hash((Integer) this.tabela[i].getChave());
-    
-                nova_tabela[posicao] = this.tabela[i];
+            if(velha_tabela[i] != null){
+
+                put(velha_tabela[i].getValor(), velha_tabela[i].getChave());
 
             }
             
         }
-
-        this.tabela = nova_tabela;
 
     }
 
@@ -209,6 +208,11 @@ public class HashExterior_V2<V, K> {
         else return false;
     }
 
+    private Boolean AntNull(NoHash_V2<V, K> no){
+        if(no.getAnt() == null) return true;
+        else return false;
+    }
+
     public void ATT(V valor, K chave){
         Integer posicao = hash((Integer) chave);
 
@@ -243,15 +247,7 @@ public class HashExterior_V2<V, K> {
         if(this.tabela[posicao] == null) return;
         NoHash_V2<V, K> noHash = this.tabela[posicao];
         System.out.println("Removendo");
-        if(noHash.getChave().equals(chave)){
-            this.tabela[posicao] = noHash.getProx();
-            this.tabela[posicao].setAnt(null);
-            noHash.setProx(null);
-            noHash = null;
-            this.size--;
-            System.out.println("Fator de carga = " + this.decimalFormat.format(fatorDeCarga()));
-            return;
-        }
+
         while (noHash != null) {
             if(noHash.getChave().equals(chave)) break;
             noHash = noHash.getProx();
@@ -259,9 +255,11 @@ public class HashExterior_V2<V, K> {
 
         if(noHash == null) return;
 
-        if(ProxNull(noHash)){
+        if(AntNull(noHash)) {
+            this.tabela[posicao] = noHash.getProx();
+        } else if(ProxNull(noHash)){
             noHash.getAnt().setProx(null);
-        } else {
+        } else{
             noHash.getProx().setAnt(noHash.getAnt());
             noHash.getAnt().setProx(noHash.getProx());
         }
