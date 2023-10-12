@@ -213,11 +213,8 @@ public class HuffTree {
 
     private HuffNode Add(HuffNode no, HuffNode novo){
 
-        StringBuffer stringBuffer = new StringBuffer();
         Integer cont = 0;
 
-        stringBuffer.append(novo.getCaractere());
-        stringBuffer.append(no.getCaractere());
         cont += no.getFrequencia() + novo.getFrequencia();
         
         HuffNode novaRaiz = new HuffNode('*', cont);
