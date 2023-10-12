@@ -2,7 +2,7 @@ package HuffmanAdaptativo;
 
 public class HuffNodeAdaptativo {
     
-    private String caractere;
+    private Character caractere;
 
     private Integer frequencia;
 
@@ -10,18 +10,18 @@ public class HuffNodeAdaptativo {
 
     private HuffNodeAdaptativo dir;
 
-    public HuffNodeAdaptativo(String caractere) {
+    public HuffNodeAdaptativo(Character caractere) {
         this.caractere = caractere;
         this.frequencia = 1;
         this.dir = null;
         this.esq = null;
     }
 
-    public String getCaractere() {
+    public Character getCaractere() {
         return caractere;
     }
 
-    public void setCaractere(String caractere) {
+    public void setCaractere(Character caractere) {
         this.caractere = caractere;
     }
 

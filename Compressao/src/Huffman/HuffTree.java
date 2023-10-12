@@ -6,6 +6,9 @@ import java.util.Set;
 
 import java.util.Map.Entry;
 
+import Huffman.util.HeapMan;
+import Huffman.util.HuffNode;
+
 public class HuffTree {
     
     private Map<Character, Integer> map;
@@ -14,10 +17,13 @@ public class HuffTree {
 
     private HuffNode raiz;
 
-    private String texto;
+    private Character[] texto;
+
+    private HeapMan heapMan;
 
     public HuffTree(){
         this.map = new HashMap<>();
+        this.heapMan = new HeapMan();
         this.raiz = null;
     }
 
@@ -46,11 +52,11 @@ public class HuffTree {
     private void Freq(){
 
         int freq = 1;
-        for(int i = 0; i < texto.length(); i++){
-            if(this.map.containsKey(texto.charAt(i))){
-                this.map.replace(texto.charAt(i), this.map.get(texto.charAt(i)), (this.map.get(texto.charAt(i)) + 1));
+        for(int i = 0; i < texto.length; i++){
+            if(this.map.containsKey(texto[i])){
+                this.map.replace(texto[i], this.map.get(texto[i]), (this.map.get(texto[i]) + 1));
             } else {
-                this.map.put(texto.charAt(i), freq);
+                this.map.put(texto[i], freq);
             }
         }
 
@@ -64,33 +70,53 @@ public class HuffTree {
 
         int cont = 0;
         for (Entry<Character,Integer> entry : set) {
-            this.vetor[cont] = new HuffNode(String.valueOf(entry.getKey()), entry.getValue());
+            this.vetor[cont] = new HuffNode(entry.getKey(), entry.getValue());
             cont++;
         }
 
     }
 
-    public String Compress(String texto){
+    private void BuildHeap(){
+        Set<Entry<Character, Integer>> set = this.map.entrySet();
 
-        this.texto = texto;
+        for (Entry<Character,Integer> entry : set) {
+            this.heapMan.Add(new HuffNode(entry.getKey(), entry.getValue()));
+        }
+    }
+
+    public Character[] Compress(String texto){
+
+        this.texto = StringToCharacter(texto);
 
         BuildTree();
 
         StringBuffer stringBuffer = new StringBuffer();
+
         for (int i = 0; i < texto.length(); i++) {
-            Search(String.valueOf(texto.charAt(i)), stringBuffer);
+            Search(this.texto[i], stringBuffer);
         }
-        return stringBuffer.toString();
+
+        return StringToCharacter(stringBuffer.toString());
+
     }
 
-    public String Decompress(String code){
+    private Character[] StringToCharacter(String text){
+        Character[] characters = new Character[text.length()];
+
+        for (int i = 0; i < text.length(); i++) {
+            characters[i] = text.charAt(i);
+        }
+        return characters;
+    }
+
+    public String Decompress(Character[] code){
         StringBuffer stringBuffer = new StringBuffer();
         Integer contador = 0;
         Decompress(this.raiz, code, contador, stringBuffer);
         return stringBuffer.toString();
     }
 
-    private void Decompress(HuffNode no, String texto, Integer contador, StringBuffer stringBuffer){
+    private void Decompress(HuffNode no, Character[] texto, Integer contador, StringBuffer stringBuffer){
 
         if(no == null) return;
         
@@ -99,31 +125,40 @@ public class HuffTree {
             Decompress(this.raiz, texto, contador, stringBuffer);
         }
 
-        if(contador == (texto.length())) return;
+        if(contador == (texto.length)) return;
 
-
-        if(String.valueOf(texto.charAt(contador)).equals("0")){
+        if(String.valueOf(texto[contador]).equals("0")){
             contador++;
             Decompress(no.getEsq(), texto, contador, stringBuffer);
-        } else if(String.valueOf(texto.charAt(contador)).equals("1")){
+        } else if(String.valueOf(texto[contador]).equals("1")){
             contador++;
             Decompress(no.getDir(), texto, contador, stringBuffer);
         }
     }
 
-    private void Search(String caractere, StringBuffer stringBuffer){
+    private void Search(Character caractere, StringBuffer stringBuffer){
         Search(raiz, caractere, stringBuffer);
     }
 
-    private void Search(HuffNode no, String caractere, StringBuffer stringBuffer){
+    private void Search(HuffNode no, Character caractere, StringBuffer stringBuffer){
+
         if(isNode(no)) return;
-        if(no.getDir().getCaractere().indexOf(caractere) == -1){
+
+        if(no.getEsq().getCaractere() == caractere){
             stringBuffer.append("0");
             Search(no.getEsq(), caractere, stringBuffer);
         } else {
             stringBuffer.append("1");
             Search(no.getDir(), caractere, stringBuffer);
         }
+
+        // if(no.getDir().getCaractere().indexOf(caractere) == -1){
+        //     stringBuffer.append("0");
+        //     Search(no.getEsq(), caractere, stringBuffer);
+        // } else {
+        //     stringBuffer.append("1");
+        //     Search(no.getDir(), caractere, stringBuffer);
+        // }
     }
 
     private void shellSort(){
@@ -153,12 +188,13 @@ public class HuffTree {
 
         Freq();
 
-        BuildVector();
+        BuildHeap();
 
-        shellSort();
+        // shellSort();
         
         for (int i = 0; i < vetor.length; i++) {
-            Add(this.vetor[i]);
+            // Add(this.vetor[i]);
+            Add(this.heapMan.Delete());
         }
 
     }
@@ -180,7 +216,7 @@ public class HuffTree {
         stringBuffer.append(no.getCaractere());
         cont += no.getFrequencia() + novo.getFrequencia();
         
-        HuffNode novaRaiz = new HuffNode(stringBuffer.toString(), cont);
+        HuffNode novaRaiz = new HuffNode('*', cont);
 
         novaRaiz.setDir(no);
         novaRaiz.setEsq(novo);
