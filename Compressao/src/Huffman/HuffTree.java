@@ -21,10 +21,13 @@ public class HuffTree {
 
     private HeapMan heapMan;
 
+    private Integer contador;
+
     public HuffTree(){
         this.map = new HashMap<>();
         this.heapMan = new HeapMan();
         this.raiz = null;
+        this.contador = 0;
     }
 
     public void Clear(){
@@ -81,6 +84,7 @@ public class HuffTree {
 
         for (Entry<Character,Integer> entry : set) {
             this.heapMan.Add(new HuffNode(entry.getKey(), entry.getValue()));
+            contador++;
         }
     }
 
@@ -192,7 +196,7 @@ public class HuffTree {
 
         // shellSort();
         
-        for (int i = 0; i < vetor.length; i++) {
+        for (int i = 0; i < contador; i++) {
             // Add(this.vetor[i]);
             Add(this.heapMan.Delete());
         }

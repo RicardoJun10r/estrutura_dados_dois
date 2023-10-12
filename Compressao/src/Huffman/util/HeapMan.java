@@ -98,6 +98,10 @@ public class HeapMan {
 
     }
 
+    public Integer Size(){
+        return this.lista.Size();
+    }
+
     public void Print(){
         System.out.println("=================");
         this.lista.Print();
